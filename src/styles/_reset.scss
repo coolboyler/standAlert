@@ -226,8 +226,10 @@ body.ios-fix {
 /*
  * 21. 滚动条样式 - Firefox
  */
- scrollbar-width: thin;
- scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+}
 
 /*
  * 22. 移动端触摸优化

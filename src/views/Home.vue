@@ -174,6 +174,8 @@ function startStand() {
     if (userStore.recordStand(5)) {
         showNotification('🎉 站立成功！保持5分钟健康时光', 'success')
         triggerConfetti()
+        // 播放站立成功音效
+        audioStore.playReminder()
     }
 }
 

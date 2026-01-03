@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { showNotification, triggerConfetti } from '../utils/notifications'
 
 export const useUserStore = defineStore('user', () => {
     // 用户统计数据
@@ -226,6 +227,27 @@ export const useUserStore = defineStore('user', () => {
 
     // 每分钟更新一次宠物状态
     setInterval(updatePetDecay, 60000)
+
+    // 检查提醒器（每5秒检查一次）
+    setInterval(() => {
+        if (isReminderActive.value && nextReminderTime.value && Date.now() >= nextReminderTime.value) {
+            // 触发提醒
+            import('../utils/notifications').then(({ showNotification }) => {
+                showNotification('⏰ 站立提醒时间到了！起来活动一下吧！', 'warning')
+            })
+
+            // 播放提醒音效（延迟一点确保音频上下文准备好）
+            setTimeout(() => {
+                import('./audio').then(({ useAudioStore }) => {
+                    const audioStore = useAudioStore()
+                    audioStore.playReminder()
+                })
+            }, 100)
+
+            // 设置下一次提醒
+            scheduleNextReminder()
+        }
+    }, 5000)
 
     return {
         // 状态

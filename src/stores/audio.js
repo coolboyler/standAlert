@@ -6,14 +6,19 @@ export const useAudioStore = defineStore('audio', () => {
     const isPlaying = ref(false)
     const volume = ref(0.5)
 
+    // Web Audio API 上下文
+    let audioContext = null
+    let currentOscillators = []
+    let currentGainNode = null
+
     // 可用的环境音效
     const ambientSounds = [
-        { id: 'forest', name: '森林', icon: '🌲', file: 'forest.mp3' },
-        { id: 'ocean', name: '海洋', icon: '🌊', file: 'ocean.mp3' },
-        { id: 'rain', name: '雨声', icon: '🌧️', file: 'rain.mp3' },
-        { id: 'cafe', name: '咖啡馆', icon: '☕', file: 'cafe.mp3' },
-        { id: 'space', name: '太空', icon: '🚀', file: 'space.mp3' },
-        { id: 'none', name: '静音', icon: '🔇', file: null }
+        { id: 'forest', name: '森林', icon: '🌲', description: '自然白噪音' },
+        { id: 'ocean', name: '海洋', icon: '🌊', description: '波浪声' },
+        { id: 'rain', name: '雨声', icon: '🌧️', description: '雨滴声' },
+        { id: 'cafe', name: '咖啡馆', icon: '☕', description: '环境人声' },
+        { id: 'space', name: '太空', icon: '🚀', description: '科幻音效' },
+        { id: 'none', name: '静音', icon: '🔇', description: '停止播放' }
     ]
 
     // 提醒音效
@@ -26,33 +31,181 @@ export const useAudioStore = defineStore('audio', () => {
 
     const selectedReminder = ref('chime')
 
-    // 模拟音频播放（实际项目中需要真实音频文件）
+    // 初始化音频上下文
+    function initAudioContext() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)()
+        }
+        if (audioContext.state === 'suspended') {
+            audioContext.resume()
+        }
+    }
+
+    // 生成音调
+    function playTone(frequency, duration, type = 'sine') {
+        initAudioContext()
+
+        const oscillator = audioContext.createOscillator()
+        const gainNode = audioContext.createGain()
+
+        oscillator.type = type
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime)
+
+        gainNode.gain.setValueAtTime(volume.value * 0.3, audioContext.currentTime)
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration)
+
+        oscillator.connect(gainNode)
+        gainNode.connect(audioContext.destination)
+
+        oscillator.start(audioContext.currentTime)
+        oscillator.stop(audioContext.currentTime + duration)
+
+        return oscillator
+    }
+
+    // 生成白噪音（用于森林、雨声等）
+    function playWhiteNoise(duration, filterFreq = 1000) {
+        initAudioContext()
+
+        const bufferSize = audioContext.sampleRate * duration
+        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
+        const data = buffer.getChannelData(0)
+
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1
+        }
+
+        const noise = audioContext.createBufferSource()
+        noise.buffer = buffer
+
+        const filter = audioContext.createBiquadFilter()
+        filter.type = 'lowpass'
+        filter.frequency.setValueAtTime(filterFreq, audioContext.currentTime)
+
+        const gainNode = audioContext.createGain()
+        gainNode.gain.setValueAtTime(volume.value * 0.1, audioContext.currentTime)
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration)
+
+        noise.connect(filter)
+        filter.connect(gainNode)
+        gainNode.connect(audioContext.destination)
+
+        noise.start(audioContext.currentTime)
+        noise.stop(audioContext.currentTime + duration)
+
+        return noise
+    }
+
+    // 播放环境音效
     function playAmbient(soundId) {
         if (soundId === 'none') {
             stopAmbient()
             return
         }
 
+        // 先停止当前音效
+        stopAmbient()
+
         currentAmbient.value = soundId
         isPlaying.value = true
 
-        // 这里可以集成真实的音频库，如 Howler.js
-        console.log(`🎵 开始播放环境音效: ${soundId}`)
+        initAudioContext()
 
-        // 模拟音效播放
+        // 根据音效类型生成不同的声音
+        switch (soundId) {
+            case 'forest':
+                // 森林：低频白噪音 + 偶尔的鸟叫
+                currentOscillators.push(playWhiteNoise(10, 800))
+                // 模拟鸟叫
+                setTimeout(() => playTone(1200, 0.2, 'sine'), 2000)
+                setTimeout(() => playTone(1500, 0.15, 'sine'), 5000)
+                break
+
+            case 'ocean':
+                // 海洋：低频白噪音 + 波浪起伏
+                currentOscillators.push(playWhiteNoise(15, 400))
+                // 波浪节奏
+                const waveInterval = setInterval(() => {
+                    if (currentAmbient.value === 'ocean') {
+                        playTone(100, 0.8, 'sine')
+                    } else {
+                        clearInterval(waveInterval)
+                    }
+                }, 3000)
+                currentOscillators.push({ stop: () => clearInterval(waveInterval) })
+                break
+
+            case 'rain':
+                // 雨声：高频白噪音
+                currentOscillators.push(playWhiteNoise(15, 2000))
+                break
+
+            case 'cafe':
+                // 咖啡馆：中频白噪音 + 人声模拟
+                currentOscillators.push(playWhiteNoise(12, 1500))
+                // 模拟人声交谈
+                const cafeInterval = setInterval(() => {
+                    if (currentAmbient.value === 'cafe') {
+                        playTone(300 + Math.random() * 200, 0.3, 'triangle')
+                    } else {
+                        clearInterval(cafeInterval)
+                    }
+                }, 2000)
+                currentOscillators.push({ stop: () => clearInterval(cafeInterval) })
+                break
+
+            case 'space':
+                // 太空：科幻音效
+                const spaceInterval = setInterval(() => {
+                    if (currentAmbient.value === 'space') {
+                        const freq = 200 + Math.random() * 400
+                        playTone(freq, 0.5, 'sawtooth')
+                    } else {
+                        clearInterval(spaceInterval)
+                    }
+                }, 1500)
+                currentOscillators.push({ stop: () => clearInterval(spaceInterval) })
+                break
+        }
+
         showSoundNotification(ambientSounds.find(s => s.id === soundId))
     }
 
     function stopAmbient() {
+        // 停止所有振荡器
+        currentOscillators.forEach(osc => {
+            try {
+                if (osc.stop) osc.stop()
+                if (osc.disconnect) osc.disconnect()
+            } catch (e) {}
+        })
+        currentOscillators = []
+
         currentAmbient.value = 'none'
         isPlaying.value = false
-        console.log('🔇 停止播放音效')
     }
 
     function playReminder() {
-        console.log(`🔔 播放提醒音效: ${selectedReminder.value}`)
+        initAudioContext()
 
-        // 模拟提醒效果
+        // 根据选择的提醒音效播放不同的声音
+        const sounds = {
+            'chime': [800, 1000, 1200],  // 风铃
+            'bell': [600, 600],          // 铃铛
+            'pop': [400, 800],           // 气泡
+            'nature': [500, 700, 900]    // 自然
+        }
+
+        const frequencies = sounds[selectedReminder.value] || [800]
+
+        // 播放序列
+        frequencies.forEach((freq, i) => {
+            setTimeout(() => {
+                playTone(freq, 0.2, 'sine')
+            }, i * 150)
+        })
+
+        // 振动提醒
         if ('vibrate' in navigator) {
             navigator.vibrate([200, 100, 200])
         }
@@ -60,9 +213,8 @@ export const useAudioStore = defineStore('audio', () => {
         // 视觉提醒
         flashScreen()
 
-        // 播放声音（实际需要音频文件）
         return new Promise(resolve => {
-            setTimeout(() => resolve(true), 500)
+            setTimeout(() => resolve(true), frequencies.length * 150 + 200)
         })
     }
 
@@ -89,7 +241,6 @@ export const useAudioStore = defineStore('audio', () => {
             animation: flash 0.5s ease-out;
         `
 
-        // 添加动画样式
         if (!document.getElementById('flash-style')) {
             const style = document.createElement('style')
             style.id = 'flash-style'
@@ -109,7 +260,6 @@ export const useAudioStore = defineStore('audio', () => {
     function showSoundNotification(sound) {
         if (!sound) return
 
-        // 创建音效可视化
         const notification = document.createElement('div')
         notification.style.cssText = `
             position: fixed;
@@ -131,7 +281,6 @@ export const useAudioStore = defineStore('audio', () => {
             <span style="font-weight: 600; color: #333;">${sound.name} 音效已启用</span>
         `
 
-        // 添加动画样式
         if (!document.getElementById('slidein-style')) {
             const style = document.createElement('style')
             style.id = 'slidein-style'

@@ -87,6 +87,16 @@
 
                 <div class="setting-item">
                     <div class="setting-info">
+                        <span class="label">测试提醒音效</span>
+                        <span class="description">点击测试当前选择的提醒声音</span>
+                    </div>
+                    <div class="setting-control">
+                        <button class="small-btn" @click="testReminderSound">🔊 测试</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
                         <span class="label">环境音效</span>
                         <span class="description">{{ audioStore.currentAmbient === 'none' ? '未选择' : audioStore.ambientSounds.find(s => s.id === audioStore.currentAmbient)?.name }}</span>
                     </div>
@@ -229,7 +239,7 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import { useUserStore } from '../stores/user'
 import { useAudioStore } from '../stores/audio'
 import { showNotification, confirmDialog } from '../utils/notifications'
@@ -247,11 +257,66 @@ const settings = reactive({
 })
 
 const themes = [
-    { id: 'default', name: '默认', icon: '🌈', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-    { id: 'ocean', name: '海洋', icon: '🌊', background: 'linear-gradient(135deg, #2E3192 0%, #1BFFFF 100%)' },
-    { id: 'forest', name: '森林', icon: '🌲', background: 'linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%)' },
-    { id: 'sunset', name: '日落', icon: '🌅', background: 'linear-gradient(135deg, #FDC830 0%, #F37335 100%)' },
-    { id: 'space', name: '太空', icon: '🚀', background: 'linear-gradient(135deg, #0F0C29 0%, #302B63 50%, #24243E 100%)' }
+    {
+        id: 'default',
+        name: '默认',
+        icon: '🌈',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        primaryColor: '#667eea',
+        secondaryColor: '#764ba2',
+        textColor: '#ffffff',
+        cardBg: 'rgba(255, 255, 255, 0.95)',
+        borderRadius: '20px',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
+    },
+    {
+        id: 'ocean',
+        name: '海洋',
+        icon: '🌊',
+        background: 'linear-gradient(135deg, #2E3192 0%, #1BFFFF 100%)',
+        primaryColor: '#2E3192',
+        secondaryColor: '#1BFFFF',
+        textColor: '#ffffff',
+        cardBg: 'rgba(255, 255, 255, 0.9)',
+        borderRadius: '16px',
+        fontFamily: 'system-ui, sans-serif'
+    },
+    {
+        id: 'forest',
+        name: '森林',
+        icon: '🌲',
+        background: 'linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%)',
+        primaryColor: '#203A43',
+        secondaryColor: '#2C5364',
+        textColor: '#e0f2f1',
+        cardBg: 'rgba(255, 255, 255, 0.85)',
+        borderRadius: '12px',
+        fontFamily: 'Georgia, serif'
+    },
+    {
+        id: 'sunset',
+        name: '日落',
+        icon: '🌅',
+        background: 'linear-gradient(135deg, #FDC830 0%, #F37335 100%)',
+        primaryColor: '#F37335',
+        secondaryColor: '#FDC830',
+        textColor: '#fff8e1',
+        cardBg: 'rgba(255, 255, 255, 0.92)',
+        borderRadius: '24px',
+        fontFamily: 'system-ui, sans-serif'
+    },
+    {
+        id: 'space',
+        name: '太空',
+        icon: '🚀',
+        background: 'linear-gradient(135deg, #0F0C29 0%, #302B63 50%, #24243E 100%)',
+        primaryColor: '#302B63',
+        secondaryColor: '#24243E',
+        textColor: '#e0e0ff',
+        cardBg: 'rgba(20, 20, 40, 0.85)',
+        borderRadius: '8px',
+        fontFamily: 'system-ui, monospace'
+    }
 ]
 
 const nextReminderText = computed(() => {
@@ -277,6 +342,11 @@ function toggleReminder() {
     } else {
         showNotification('⏸️ 提醒已暂停', 'info')
     }
+}
+
+function testReminderSound() {
+    audioStore.playReminder()
+    showNotification(`🎵 正在播放: ${audioStore.reminderSounds.find(s => s.id === audioStore.selectedReminder)?.name}`, 'info')
 }
 
 function renamePet() {
@@ -445,8 +515,49 @@ watch(settings, saveSettings, { deep: true })
 watch(() => settings.currentTheme, (newTheme) => {
     const theme = themes.find(t => t.id === newTheme)
     if (theme) {
+        // 应用背景
         document.body.style.background = theme.background
+
+        // 应用CSS变量
+        document.documentElement.style.setProperty('--theme-primary', theme.primaryColor)
+        document.documentElement.style.setProperty('--theme-secondary', theme.secondaryColor)
+        document.documentElement.style.setProperty('--theme-text', theme.textColor)
+        document.documentElement.style.setProperty('--theme-card-bg', theme.cardBg)
+        document.documentElement.style.setProperty('--theme-border-radius', theme.borderRadius)
+        document.documentElement.style.setProperty('--theme-font-family', theme.fontFamily)
+
+        // 应用字体到所有卡片
+        const cards = document.querySelectorAll('.settings-container, .settings-section, .setting-item, .theme-card')
+        cards.forEach(card => {
+            card.style.fontFamily = theme.fontFamily
+            if (theme.id === 'space') {
+                card.style.color = theme.textColor
+            }
+        })
+
+        // 应用圆角到所有卡片和按钮
+        const elements = document.querySelectorAll('.settings-container, .settings-section, .setting-item, .theme-card, .action-btn, .small-btn, .toggle-btn')
+        elements.forEach(el => {
+            el.style.borderRadius = theme.borderRadius
+        })
+
+        // 特殊处理：太空主题让卡片背景变暗
+        if (theme.id === 'space') {
+            document.querySelectorAll('.settings-container, .settings-section, .setting-item').forEach(el => {
+                el.style.background = theme.cardBg
+                el.style.color = theme.textColor
+            })
+        } else {
+            document.querySelectorAll('.settings-container, .settings-section, .setting-item').forEach(el => {
+                el.style.background = ''
+                el.style.color = ''
+            })
+        }
+
         showNotification(`🎨 已切换到${theme.name}主题`, 'info')
+
+        // 添加主题切换动画
+        document.body.style.transition = 'background 0.8s ease'
     }
 })
 
