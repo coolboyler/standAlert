@@ -166,8 +166,8 @@ function snoozeReminder() {
     showQuickActions.value = false
 }
 
-// 每秒检查一次提醒时间
-setInterval(checkReminderTime, 1000)
+// 每5秒检查一次提醒时间（减少CPU使用）
+setInterval(checkReminderTime, 5000)
 
 // 每天重置今日统计
 function checkDailyReset() {
@@ -212,16 +212,19 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     overflow: hidden;
 }
 
-/* 导航栏 */
+/* 导航栏 - 性能优化版 */
 .navbar {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.98);
+    /* 移除backdrop-filter提升性能 */
     padding: 12px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     z-index: 100;
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .nav-brand {
@@ -252,8 +255,11 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     color: #666;
     text-decoration: none;
     font-size: 12px;
-    transition: all 0.2s;
+    /* 优化过渡 */
+    transition: background 0.15s ease, color 0.15s ease;
     gap: 4px;
+    /* 硬件加速 */
+    transform: translateZ(0);
 
     i {
         font-size: 16px;
@@ -275,11 +281,15 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: scroll-position;
 }
 
+/* 优化路由过渡 - 更快更轻量 */
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
 }
 
 .fade-enter-from,
@@ -287,7 +297,7 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     opacity: 0;
 }
 
-/* 浮动提醒按钮 */
+/* 浮动提醒按钮 - 性能优化版 */
 .floating-reminder {
     position: fixed;
     bottom: 20px;
@@ -295,17 +305,20 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     background: white;
     padding: 16px;
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     z-index: 99;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    transition: transform 0.2s;
+    transition: transform 0.15s ease;
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: transform;
 
     &:hover {
-        transform: scale(1.05);
+        transform: scale(1.03) translateZ(0);
     }
 
     span {
@@ -325,10 +338,11 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    animation: pulse 2s infinite;
+    /* 移除持续动画，改为状态变化时触发 */
+    transition: all 0.3s ease;
 
     &.active {
-        animation: pulse 0.5s infinite, shake 0.5s infinite;
+        animation: pulse 1s ease-in-out 3;
         background: linear-gradient(135deg, #f093fb, #f5576c);
     }
 }
@@ -370,8 +384,10 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    /* 硬件加速 */
+    transform: translateZ(0);
 
     &.primary {
         background: linear-gradient(135deg, #48bb78, #38a169);
@@ -385,12 +401,16 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     }
 
     &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        transform: translateY(-1px) translateZ(0);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+        transform: translateY(0) translateZ(0);
     }
 }
 
-/* 宠物悬浮窗 */
+/* 宠物悬浮窗 - 性能优化版 */
 .pet-float {
     position: fixed;
     bottom: 20px;
@@ -398,26 +418,28 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
     background: white;
     padding: 12px;
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     z-index: 99;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    transition: transform 0.2s;
+    transition: transform 0.15s ease;
+    /* 硬件加速 */
+    transform: translateZ(0);
 
     &:hover {
-        transform: scale(1.05);
+        transform: scale(1.03) translateZ(0);
     }
 
     .pet-emoji {
         font-size: 32px;
-        transition: transform 0.3s;
+        transition: transform 0.2s ease;
 
-        &.happy { transform: rotate(10deg); }
+        &.happy { transform: rotate(5deg); }
         &.neutral { transform: rotate(0deg); }
-        &.sad { transform: rotate(-10deg); }
+        &.sad { transform: rotate(-5deg); }
     }
 
     .pet-hp-bar {
@@ -430,7 +452,9 @@ watch(() => userStore.pet.happiness, (newVal, oldVal) => {
         .hp-fill {
             height: 100%;
             background: linear-gradient(90deg, #f56565, #ed8936, #48bb78);
-            transition: width 0.3s;
+            transition: width 0.3s ease;
+            /* 硬件加速 */
+            transform: translateZ(0);
         }
     }
 }

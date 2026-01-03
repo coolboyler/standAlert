@@ -96,7 +96,7 @@ export const useAudioStore = defineStore('audio', () => {
         return noise
     }
 
-    // 播放环境音效
+    // 播放环境音效（纯净白噪音）
     function playAmbient(soundId) {
         if (soundId === 'none') {
             stopAmbient()
@@ -111,60 +111,31 @@ export const useAudioStore = defineStore('audio', () => {
 
         initAudioContext()
 
-        // 根据音效类型生成不同的声音
+        // 根据音效类型生成对应的纯净白噪音
         switch (soundId) {
             case 'forest':
-                // 森林：低频白噪音 + 偶尔的鸟叫
-                currentOscillators.push(playWhiteNoise(10, 800))
-                // 模拟鸟叫
-                setTimeout(() => playTone(1200, 0.2, 'sine'), 2000)
-                setTimeout(() => playTone(1500, 0.15, 'sine'), 5000)
+                // 森林：低频白噪音 (800Hz截止频率)
+                currentOscillators.push(playWhiteNoise(60, 800))
                 break
 
             case 'ocean':
-                // 海洋：低频白噪音 + 波浪起伏
-                currentOscillators.push(playWhiteNoise(15, 400))
-                // 波浪节奏
-                const waveInterval = setInterval(() => {
-                    if (currentAmbient.value === 'ocean') {
-                        playTone(100, 0.8, 'sine')
-                    } else {
-                        clearInterval(waveInterval)
-                    }
-                }, 3000)
-                currentOscillators.push({ stop: () => clearInterval(waveInterval) })
+                // 海洋：超低频白噪音 (400Hz截止频率)
+                currentOscillators.push(playWhiteNoise(60, 400))
                 break
 
             case 'rain':
-                // 雨声：高频白噪音
-                currentOscillators.push(playWhiteNoise(15, 2000))
+                // 雨声：高频白噪音 (2000Hz截止频率)
+                currentOscillators.push(playWhiteNoise(60, 2000))
                 break
 
             case 'cafe':
-                // 咖啡馆：中频白噪音 + 人声模拟
-                currentOscillators.push(playWhiteNoise(12, 1500))
-                // 模拟人声交谈
-                const cafeInterval = setInterval(() => {
-                    if (currentAmbient.value === 'cafe') {
-                        playTone(300 + Math.random() * 200, 0.3, 'triangle')
-                    } else {
-                        clearInterval(cafeInterval)
-                    }
-                }, 2000)
-                currentOscillators.push({ stop: () => clearInterval(cafeInterval) })
+                // 咖啡馆：中频白噪音 (1500Hz截止频率)
+                currentOscillators.push(playWhiteNoise(60, 1500))
                 break
 
             case 'space':
-                // 太空：科幻音效
-                const spaceInterval = setInterval(() => {
-                    if (currentAmbient.value === 'space') {
-                        const freq = 200 + Math.random() * 400
-                        playTone(freq, 0.5, 'sawtooth')
-                    } else {
-                        clearInterval(spaceInterval)
-                    }
-                }, 1500)
-                currentOscillators.push({ stop: () => clearInterval(spaceInterval) })
+                // 太空：超低频白噪音 (200Hz截止频率)
+                currentOscillators.push(playWhiteNoise(60, 200))
                 break
         }
 

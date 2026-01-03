@@ -1,15 +1,81 @@
 // 全局样式
 @import 'reset';
-@import 'animations';
 @import 'components';
 
-// 基础样式
+// ==================== 性能优化的动画 ====================
+// 只保留必要的核心动画，减少GPU负担
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.02); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes flash {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+// ==================== 基础样式（性能优化版） ====================
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #333;
     line-height: 1.6;
+    /* 启用硬件加速 */
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+// 优化滚动性能
+.main-content {
+    /* 启用独立的合成层 */
+    transform: translateZ(0);
+    will-change: scroll-position;
+    /* 优化滚动行为 */
+    -webkit-overflow-scrolling: touch;
+}
+
+// 避免不必要的重绘
+* {
+    /* 减少重绘区域 */
+    outline: none;
+}
+
+// 优化点击响应（减少延迟）
+button, .action-card, .ambient-btn, .nav-item, .pet-float, .floating-reminder {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+// 减少动画的GPU使用
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 // 滚动条美化

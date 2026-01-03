@@ -508,57 +508,38 @@ function loadSettings() {
     }
 }
 
-// 监听设置变化，自动保存
-watch(settings, saveSettings, { deep: true })
+// 监听设置变化，自动保存（使用防抖减少频繁写入）
+let saveTimeout = null
+watch(settings, () => {
+    if (saveTimeout) clearTimeout(saveTimeout)
+    saveTimeout = setTimeout(() => {
+        localStorage.setItem('standupSettings', JSON.stringify(settings))
+    }, 500)
+}, { deep: true })
 
-// 监听主题变化，应用主题
+// 监听主题变化，应用主题（优化版，减少DOM操作）
+let themeApplyTimeout = null
 watch(() => settings.currentTheme, (newTheme) => {
-    const theme = themes.find(t => t.id === newTheme)
-    if (theme) {
-        // 应用背景
-        document.body.style.background = theme.background
+    if (themeApplyTimeout) clearTimeout(themeApplyTimeout)
 
-        // 应用CSS变量
-        document.documentElement.style.setProperty('--theme-primary', theme.primaryColor)
-        document.documentElement.style.setProperty('--theme-secondary', theme.secondaryColor)
-        document.documentElement.style.setProperty('--theme-text', theme.textColor)
-        document.documentElement.style.setProperty('--theme-card-bg', theme.cardBg)
-        document.documentElement.style.setProperty('--theme-border-radius', theme.borderRadius)
-        document.documentElement.style.setProperty('--theme-font-family', theme.fontFamily)
+    themeApplyTimeout = setTimeout(() => {
+        const theme = themes.find(t => t.id === newTheme)
+        if (theme) {
+            // 批量应用CSS变量（一次性操作）
+            const rootStyle = document.documentElement.style
+            rootStyle.setProperty('--theme-primary', theme.primaryColor)
+            rootStyle.setProperty('--theme-secondary', theme.secondaryColor)
+            rootStyle.setProperty('--theme-text', theme.textColor)
+            rootStyle.setProperty('--theme-card-bg', theme.cardBg)
+            rootStyle.setProperty('--theme-border-radius', theme.borderRadius)
+            rootStyle.setProperty('--theme-font-family', theme.fontFamily)
 
-        // 应用字体到所有卡片
-        const cards = document.querySelectorAll('.settings-container, .settings-section, .setting-item, .theme-card')
-        cards.forEach(card => {
-            card.style.fontFamily = theme.fontFamily
-            if (theme.id === 'space') {
-                card.style.color = theme.textColor
-            }
-        })
+            // 简化背景切换
+            document.body.style.background = theme.background
 
-        // 应用圆角到所有卡片和按钮
-        const elements = document.querySelectorAll('.settings-container, .settings-section, .setting-item, .theme-card, .action-btn, .small-btn, .toggle-btn')
-        elements.forEach(el => {
-            el.style.borderRadius = theme.borderRadius
-        })
-
-        // 特殊处理：太空主题让卡片背景变暗
-        if (theme.id === 'space') {
-            document.querySelectorAll('.settings-container, .settings-section, .setting-item').forEach(el => {
-                el.style.background = theme.cardBg
-                el.style.color = theme.textColor
-            })
-        } else {
-            document.querySelectorAll('.settings-container, .settings-section, .setting-item').forEach(el => {
-                el.style.background = ''
-                el.style.color = ''
-            })
+            showNotification(`🎨 已切换到${theme.name}主题`, 'info')
         }
-
-        showNotification(`🎨 已切换到${theme.name}主题`, 'info')
-
-        // 添加主题切换动画
-        document.body.style.transition = 'background 0.8s ease'
-    }
+    }, 200)
 })
 
 // 监听宠物状态提醒
@@ -576,7 +557,7 @@ onMounted(() => {
         notificationPermission.value = Notification.permission
     }
 
-    // 每分钟检查一次是否需要自动喂养
+    // 每2分钟检查一次是否需要自动喂养（减少检查频率）
     setInterval(() => {
         if (settings.autoFeed && userStore.isReminderActive) {
             if (userStore.pet.hunger < 30) {
@@ -586,7 +567,7 @@ onMounted(() => {
                 userStore.restPet()
             }
         }
-    }, 60000)
+    }, 120000)
 })
 </script>
 

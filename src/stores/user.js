@@ -218,17 +218,17 @@ export const useUserStore = defineStore('user', () => {
         todayStands.value = 0
     }
 
-    // 宠物状态随时间衰减
+    // 宠物状态随时间衰减（优化版：每2分钟更新一次，减少计算）
     function updatePetDecay() {
-        pet.value.happiness = Math.max(0, pet.value.happiness - 0.1)
-        pet.value.hunger = Math.max(0, pet.value.hunger - 0.05)
-        pet.value.energy = Math.max(0, pet.value.energy - 0.08)
+        pet.value.happiness = Math.max(0, pet.value.happiness - 0.2)
+        pet.value.hunger = Math.max(0, pet.value.hunger - 0.1)
+        pet.value.energy = Math.max(0, pet.value.energy - 0.16)
     }
 
-    // 每分钟更新一次宠物状态
-    setInterval(updatePetDecay, 60000)
+    // 每2分钟更新一次宠物状态（减少频率）
+    setInterval(updatePetDecay, 120000)
 
-    // 检查提醒器（每5秒检查一次）
+    // 检查提醒器（每10秒检查一次，减少频率）
     setInterval(() => {
         if (isReminderActive.value && nextReminderTime.value && Date.now() >= nextReminderTime.value) {
             // 触发提醒
@@ -247,7 +247,7 @@ export const useUserStore = defineStore('user', () => {
             // 设置下一次提醒
             scheduleNextReminder()
         }
-    }, 5000)
+    }, 10000)
 
     return {
         // 状态

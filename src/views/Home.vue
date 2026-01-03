@@ -213,7 +213,7 @@ onMounted(() => {
     margin: 0 auto;
 }
 
-/* 英雄区域 */
+/* 英雄区域 - 性能优化版 */
 .hero {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 20px;
@@ -223,17 +223,11 @@ onMounted(() => {
     box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
     position: relative;
     overflow: hidden;
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: transform;
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        animation: rotate 20s linear infinite;
-    }
+    /* 移除持续动画，减少GPU负担 */
 }
 
 @keyframes rotate {
@@ -253,8 +247,13 @@ onMounted(() => {
     align-items: center;
     gap: 12px;
 
+    /* 移除无限动画，改为悬停时触发 */
     .emoji {
-        animation: bounce 2s infinite;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover .emoji {
+        animation: bounce 0.6s ease;
     }
 }
 
@@ -272,12 +271,14 @@ onMounted(() => {
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.15);
+    /* 移除backdrop-filter以提升性能 */
     padding: 16px;
     border-radius: 12px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    /* 硬件加速 */
+    transform: translateZ(0);
 
     .stat-value {
         font-size: 32px;
@@ -313,16 +314,24 @@ onMounted(() => {
     border-radius: 16px;
     padding: 20px;
     cursor: pointer;
-    transition: all 0.3s;
+    /* 优化过渡，使用transform和opacity only */
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: transform;
 
     &:hover {
-        transform: translateY(-4px);
+        transform: translateY(-2px) translateZ(0);
         border-color: #667eea;
-        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    }
+
+    &:active {
+        transform: translateY(0) translateZ(0);
     }
 
     .icon {
@@ -362,12 +371,14 @@ onMounted(() => {
     border-radius: 12px;
     padding: 12px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
     font-size: 14px;
+    /* 硬件加速 */
+    transform: translateZ(0);
 
     .emoji {
         font-size: 20px;
@@ -375,7 +386,7 @@ onMounted(() => {
 
     &:hover {
         border-color: #667eea;
-        transform: scale(1.05);
+        transform: scale(1.03) translateZ(0);
     }
 
     &.active {
@@ -410,11 +421,14 @@ onMounted(() => {
     gap: 12px;
     border: 2px solid #e0e0e0;
     opacity: 0.6;
+    /* 硬件加速 */
+    transform: translateZ(0);
+    transition: opacity 0.2s ease, border-color 0.2s ease;
 
     &.unlocked {
         opacity: 1;
         border-color: #48bb78;
-        background: linear-gradient(135deg, rgba(72, 187, 120, 0.1), rgba(56, 161, 105, 0.1));
+        background: rgba(72, 187, 120, 0.08);
     }
 
     .emoji {
@@ -470,6 +484,8 @@ onMounted(() => {
     padding: 16px;
     border-radius: 12px;
     border: 2px solid #e0e0e0;
+    /* 硬件加速 */
+    transform: translateZ(0);
 
     .challenge-header {
         display: flex;
@@ -500,7 +516,9 @@ onMounted(() => {
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #667eea, #764ba2);
-            transition: width 0.3s;
+            transition: width 0.3s ease;
+            /* 硬件加速 */
+            transform: translateZ(0);
         }
     }
 
