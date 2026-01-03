@@ -172,7 +172,7 @@
 <script setup>
 import { ref, computed, reactive } from 'vue'
 import { useUserStore } from '../stores/user'
-import { showNotification, triggerConfetti, showChallengeComplete } from '../utils/notifications'
+import { showNotification, triggerConfetti } from '../utils/notifications'
 
 const userStore = useUserStore()
 
