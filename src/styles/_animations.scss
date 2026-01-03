@@ -1,0 +1,1214 @@
+/* 动画定义 */
+
+// 旋转
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// 脉冲
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+    }
+}
+
+// 弹跳
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+        transform: translateY(-25%);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+}
+
+// 淡入
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+// 淡出
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+// 滑入
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+// 滑出
+@keyframes slideOutUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+}
+
+// 缩放
+@keyframes scaleIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleOut {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+}
+
+// 弹跳进入
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+// 弹跳出
+@keyframes bounceOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+}
+
+// 摇晃
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+// 浮动
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+// 摇摆
+@keyframes swing {
+    15% {
+        transform: translateX(5px);
+    }
+    30% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(3px);
+    }
+    65% {
+        transform: translateX(-3px);
+    }
+    80% {
+        transform: translateX(2px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+// 心跳
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.3);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.3);
+    }
+    70% {
+        transform: scale(1);
+    }
+}
+
+// 闪烁
+@keyframes flash {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+// 旋转脉冲
+@keyframes rotatePulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.2);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+// 波浪
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-5px);
+    }
+    75% {
+        transform: translateY(5px);
+    }
+}
+
+// 闪烁发光
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 30px rgba(102, 126, 234, 0.6);
+    }
+}
+
+// 震动
+@keyframes vibrate {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+// 脉冲环
+@keyframes ripple {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+// 旋转3D
+@keyframes rotate3d {
+    0% {
+        transform: perspective(400px) rotateY(0);
+    }
+    100% {
+        transform: perspective(400px) rotateY(360deg);
+    }
+}
+
+// 翻转
+@keyframes flip {
+    0% {
+        transform: perspective(400px) rotateY(0);
+    }
+    50% {
+        transform: perspective(400px) rotateY(180deg);
+    }
+    100% {
+        transform: perspective(400px) rotateY(360deg);
+    }
+}
+
+// 颜色循环
+@keyframes colorCycle {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+// 跳动点
+@keyframes dotPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+}
+
+// 进度条流动
+@keyframes progressFlow {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+// 粒子爆炸
+@keyframes particleBurst {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--x), var(--y)) scale(0);
+        opacity: 0;
+    }
+}
+
+// 闪烁文字
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(102, 126, 234, 1), 0 0 30px rgba(102, 126, 234, 0.8);
+    }
+}
+
+// 边框流动
+@keyframes borderFlow {
+    0% {
+        border-color: #667eea;
+    }
+    50% {
+        border-color: #764ba2;
+    }
+    100% {
+        border-color: #667eea;
+    }
+}
+
+// 背景流动
+@keyframes backgroundFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+// 旋转彩虹
+@keyframes rainbow {
+    0% {
+        filter: hue-rotate(0deg) brightness(1);
+    }
+    50% {
+        filter: hue-rotate(180deg) brightness(1.2);
+    }
+    100% {
+        filter: hue-rotate(360deg) brightness(1);
+    }
+}
+
+// 闪烁星星
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+// 脉冲文字
+@keyframes textPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+// 滑动条
+@keyframes slideBar {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+// 旋转加载
+@keyframes spinLoad {
+    0% {
+        transform: rotate(0deg) scale(1);
+        border-top-color: #667eea;
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+        border-top-color: #764ba2;
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        border-top-color: #667eea;
+    }
+}
+
+// 弹性缩放
+@keyframes elasticScale {
+    0% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1.1);
+    }
+    60% {
+        transform: scale(0.95);
+    }
+    80% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// 波纹扩散
+@keyframes rippleOut {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+// 跳动心跳
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.3);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.3);
+    }
+    70% {
+        transform: scale(1);
+    }
+}
+
+// 闪烁警告
+@keyframes warningFlash {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(237, 137, 54, 0.3);
+    }
+}
+
+// 成功闪烁
+@keyframes successFlash {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(72, 187, 120, 0.3);
+    }
+}
+
+// 错误闪烁
+@keyframes errorFlash {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(245, 101, 101, 0.3);
+    }
+}
+
+// 玻璃破碎效果
+@keyframes glassBreak {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.5) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+// 粒子雨
+@keyframes particleRain {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+// 脉冲环
+@keyframes pulseRing {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+    }
+}
+
+// 旋转卡片
+@keyframes rotateCard {
+    0% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+    50% {
+        transform: perspective(1000px) rotateY(180deg);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(360deg);
+    }
+}
+
+// 波浪文字
+@keyframes waveText {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-3px);
+    }
+    75% {
+        transform: translateY(3px);
+    }
+}
+
+// 闪烁边框
+@keyframes borderPulse {
+    0%, 100% {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    50% {
+        border-color: #764ba2;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0);
+    }
+}
+
+// 旋转阴影
+@keyframes rotateShadow {
+    0% {
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        transform: rotate(0deg);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(118, 75, 162, 0.8);
+        transform: rotate(360deg);
+    }
+}
+
+// 脉冲按钮
+@keyframes buttonPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+    }
+}
+
+// 流动光
+@keyframes flowLight {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+// 旋转彩虹圈
+@keyframes rainbowRing {
+    0% {
+        filter: hue-rotate(0deg);
+        transform: rotate(0deg);
+    }
+    50% {
+        filter: hue-rotate(180deg);
+        transform: rotate(180deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+// 粒子爆炸2
+@keyframes explode {
+    0% {
+        transform: scale(0) translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2) translate(var(--tx), var(--ty));
+        opacity: 0;
+    }
+}
+
+// 脉冲文字2
+@keyframes textPulse2 {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+    }
+    50% {
+        transform: scale(1.2);
+        text-shadow: 0 0 20px rgba(102, 126, 234, 1);
+    }
+}
+
+// 旋转波浪
+@keyframes rotateWave {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(90deg) scale(1.1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1);
+    }
+    75% {
+        transform: rotate(270deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+// 闪烁彩虹
+@keyframes rainbowFlash {
+    0%, 100% {
+        filter: hue-rotate(0deg) brightness(1);
+    }
+    25% {
+        filter: hue-rotate(90deg) brightness(1.2);
+    }
+    50% {
+        filter: hue-rotate(180deg) brightness(1.4);
+    }
+    75% {
+        filter: hue-rotate(270deg) brightness(1.2);
+    }
+}
+
+// 脉冲边框2
+@keyframes borderPulse2 {
+    0%, 100% {
+        border-width: 2px;
+        border-color: #667eea;
+    }
+    50% {
+        border-width: 4px;
+        border-color: #764ba2;
+    }
+}
+
+// 旋转发光
+@keyframes glowRotate {
+    0% {
+        filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.5));
+        transform: rotate(0deg);
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgba(102, 126, 234, 1));
+        transform: rotate(180deg);
+    }
+    100% {
+        filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.5));
+        transform: rotate(360deg);
+    }
+}
+
+// 波浪背景
+@keyframes waveBg {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+// 弹性跳动
+@keyframes elasticBounce {
+    0% {
+        transform: scale(0) translateY(0);
+    }
+    40% {
+        transform: scale(1.1) translateY(-30px);
+    }
+    60% {
+        transform: scale(0.95) translateY(-15px);
+    }
+    80% {
+        transform: scale(1.05) translateY(-5px);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+    }
+}
+
+// 旋转脉冲环
+@keyframes rotatePulseRing {
+    0% {
+        transform: rotate(0deg) scale(0.9);
+        opacity: 1;
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: rotate(360deg) scale(0.9);
+        opacity: 1;
+    }
+}
+
+// 粒子螺旋
+@keyframes particleSpiral {
+    0% {
+        transform: rotate(0deg) translateX(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(720deg) translateX(50px) scale(0);
+        opacity: 0;
+    }
+}
+
+// 脉冲阴影
+@keyframes pulseShadow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(102, 126, 234, 0);
+    }
+}
+
+// 旋转彩虹文字
+@keyframes rainbowText {
+    0% {
+        background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+        background-size: 400% 400%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+// 玻璃破碎2
+@keyframes glassShatter {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+        filter: blur(0);
+    }
+    100% {
+        transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.3);
+        opacity: 0;
+        filter: blur(2px);
+    }
+}
+
+// 脉冲文字3
+@keyframes pulseText3 {
+    0%, 100% {
+        transform: scale(1) translateY(0);
+        letter-spacing: 0;
+    }
+    50% {
+        transform: scale(1.15) translateY(-2px);
+        letter-spacing: 2px;
+    }
+}
+
+// 旋转光晕
+@keyframes rotateHalo {
+    0% {
+        transform: rotate(0deg) scale(1);
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.2);
+        box-shadow: 0 0 40px rgba(102, 126, 234, 0.8);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    }
+}
+
+// 波浪按钮
+@keyframes waveButton {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    25% {
+        transform: translateY(-3px) scale(1.05);
+    }
+    50% {
+        transform: translateY(0) scale(1);
+    }
+    75% {
+        transform: translateY(3px) scale(0.95);
+    }
+}
+
+// 闪烁彩虹边框
+@keyframes rainbowBorder {
+    0% {
+        border-color: #ff0000;
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        border-color: #00ff00;
+        filter: hue-rotate(180deg);
+    }
+    100% {
+        border-color: #0000ff;
+        filter: hue-rotate(360deg);
+    }
+}
+
+// 旋转粒子
+@keyframes rotateParticles {
+    0% {
+        transform: rotate(0deg) translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: rotate(180deg) translateX(20px);
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate(360deg) translateX(0);
+        opacity: 1;
+    }
+}
+
+// 脉冲边框3
+@keyframes pulseBorder3 {
+    0%, 100% {
+        border-radius: 8px;
+        border-width: 2px;
+    }
+    50% {
+        border-radius: 20px;
+        border-width: 4px;
+    }
+}
+
+// 旋转文字
+@keyframes rotateText {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+// 波浪阴影
+@keyframes waveShadow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }
+    50% {
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.8), 0 -5px 20px rgba(118, 75, 162, 0.6);
+    }
+}
+
+// 弹性旋转
+@keyframes elasticRotate {
+    0% {
+        transform: scale(0) rotate(0deg);
+    }
+    40% {
+        transform: scale(1.1) rotate(180deg);
+    }
+    60% {
+        transform: scale(0.95) rotate(270deg);
+    }
+    80% {
+        transform: scale(1.05) rotate(330deg);
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+// 粒子波浪
+@keyframes particleWave {
+    0% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 1;
+    }
+    25% {
+        transform: translateY(-10px) translateX(5px) scale(1.1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(0) translateX(10px) scale(1);
+        opacity: 0.6;
+    }
+    75% {
+        transform: translateY(10px) translateX(5px) scale(0.9);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+// 脉冲光晕
+@keyframes pulseHalo {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5), 0 0 20px rgba(102, 126, 234, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 40px rgba(102, 126, 234, 0.6), 0 0 60px rgba(102, 126, 234, 0.4);
+    }
+}
+
+// 旋转彩虹光
+@keyframes rainbowLight {
+    0% {
+        background: conic-gradient(from 0deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3, #ff0000);
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        background: conic-gradient(from 360deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3, #ff0000);
+        filter: hue-rotate(360deg);
+    }
+}
+
+// 弹性脉冲
+@keyframes elasticPulse {
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.25);
+    }
+    40% {
+        transform: scale(0.75);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+    65% {
+        transform: scale(0.85);
+    }
+    75% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// 旋转波浪环
+@keyframes rotateWaveRing {
+    0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    25% {
+        transform: rotate(90deg) scale(1.1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: rotate(180deg) scale(1);
+        opacity: 0.6;
+    }
+    75% {
+        transform: rotate(270deg) scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+    }
+}
+
+// 粒子爆炸3
+@keyframes particleExplosion {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--r));
+        opacity: 0;
+    }
+}
+
+// 脉冲文字4
+@keyframes pulseText4 {
+    0%, 100% {
+        transform: scale(1) skew(0deg);
+        text-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+    }
+    25% {
+        transform: scale(1.1) skew(-5deg);
+        text-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
+    }
+    50% {
+        transform: scale(1.05) skew(5deg);
+        text-shadow: 0 0 25px rgba(102, 126, 234, 1);
+    }
+    75% {
+        transform: scale(1.1) skew(-3deg);
+        text-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
+    }
+}
+
+// 旋转光晕2
+@keyframes rotateHalo2 {
+    0% {
+        transform: rotate(0deg) scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.2);
+        filter: brightness(1.3);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        filter: brightness(1);
+    }
+}
+
+// 波浪旋转
+@keyframes waveRotate {
+    0%, 100% {
+        transform: rotate(0deg) translateY(0);
+    }
+    25% {
+        transform: rotate(90deg) translateY(-5px);
+    }
+    50% {
+        transform: rotate(180deg) translateY(0);
+    }
+    75% {
+        transform: rotate(270deg) translateY(5px);
+    }
+}
+
+// 闪烁彩虹文字
+@keyframes rainbowTextFlash {
+    0%, 100% {
+        filter: hue-rotate(0deg) brightness(1);
+        transform: scale(1);
+    }
+    25% {
+        filter: hue-rotate(90deg) brightness(1.2);
+        transform: scale(1.1);
+    }
+    50% {
+        filter: hue-rotate(180deg) brightness(1.4);
+        transform: scale(1.2);
+    }
+    75% {
+        filter: hue-rotate(270deg) brightness(1.2);
+        transform: scale(1.1);
+    }
+}
+
+// 弹性旋转脉冲
+@keyframes elasticRotatePulse {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    40% {
+        transform: scale(1.1) rotate(180deg);
+        opacity: 1;
+    }
+    60% {
+        transform: scale(0.95) rotate(270deg);
+    }
+    80% {
+        transform: scale(1.05) rotate(330deg);
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+    }
+}

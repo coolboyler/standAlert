@@ -1,0 +1,25 @@
+{
+  "name": "standup-adventure",
+  "version": "1.0.0",
+  "description": "一个创意站立提醒网站，将久坐提醒变成冒险旅程",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.3.0",
+    "vue-router": "^4.2.0",
+    "pinia": "^2.1.0",
+    "canvas-confetti": "^1.6.0",
+    "howler": "^2.2.3",
+    "chart.js": "^4.4.0",
+    "dayjs": "^1.11.10"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.0",
+    "vite": "^4.3.0",
+    "sass": "^1.60.0"
+  }
+}
